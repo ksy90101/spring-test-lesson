@@ -27,8 +27,8 @@ public class PostController {
         return ResponseEntity.ok(todos);
     }
 
-    @GetMapping("/${id}")
-    public ResponseEntity<TodoResponse> findById(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<TodoResponse> findById(@PathVariable Long id) {
         TodoResponse todo = todoService.findById(id);
 
         return ResponseEntity.ok(todo);
@@ -42,15 +42,15 @@ public class PostController {
             .build();
     }
 
-    @PatchMapping("/${id}")
-    public ResponseEntity<TodoResponse> update(@RequestBody TodoUpdateRequest todoUpdateRequest, @RequestParam Long id) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<TodoResponse> update(@RequestBody TodoUpdateRequest todoUpdateRequest, @PathVariable Long id) {
         TodoResponse todo = todoService.update(todoUpdateRequest, id);
 
         return ResponseEntity.ok(todo);
     }
 
-    @DeleteMapping("/${id}")
-    public ResponseEntity<Void> delete(@RequestParam Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         todoService.delete(id);
 
         return ResponseEntity.noContent()
