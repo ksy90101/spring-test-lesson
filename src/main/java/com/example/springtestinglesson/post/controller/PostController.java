@@ -1,15 +1,59 @@
 package com.example.springtestinglesson.post.controller;
 
+import com.example.springtestinglesson.post.dto.TodoCreateRequest;
+import com.example.springtestinglesson.post.dto.TodoResponse;
+import com.example.springtestinglesson.post.dto.TodoUpdateRequest;
 import com.example.springtestinglesson.post.service.TodoService;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
+@RequestMapping("/todos")
 public class PostController {
-    private final TodoService postService;
+    private final TodoService todoService;
 
-    public PostController(TodoService postService) {
-        this.postService = postService;
+    public PostController(TodoService todoService) {
+        this.todoService = todoService;
     }
 
+    @GetMapping
+    public ResponseEntity<List<TodoResponse>> findAll() {
+        List<TodoResponse> todos = todoService.findAll();
 
+        return ResponseEntity.ok(todos);
+    }
+
+    @GetMapping("/${id}")
+    public ResponseEntity<TodoResponse> findById(@RequestParam Long id) {
+        TodoResponse todo = todoService.findById(id);
+
+        return ResponseEntity.ok(todo);
+    }
+
+    @PostMapping()
+    public ResponseEntity<Void> create(@RequestBody TodoCreateRequest todoCreateRequest) throws URISyntaxException {
+        Long id = todoService.create(todoCreateRequest);
+
+        return ResponseEntity.created(new URI("/todos/" + id))
+            .build();
+    }
+
+    @PatchMapping("/${id}")
+    public ResponseEntity<TodoResponse> update(@RequestBody TodoUpdateRequest todoUpdateRequest, @RequestParam Long id) {
+        TodoResponse todo = todoService.update(todoUpdateRequest, id);
+
+        return ResponseEntity.ok(todo);
+    }
+
+    @DeleteMapping("/${id}")
+    public ResponseEntity<Void> delete(@RequestParam Long id) {
+        todoService.delete(id);
+
+        return ResponseEntity.noContent()
+            .build();
+    }
 }
