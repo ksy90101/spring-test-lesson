@@ -13,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/todos")
-public class PostController {
+public class TodoController {
     private final TodoService todoService;
 
-    public PostController(TodoService todoService) {
+    public TodoController(TodoService todoService) {
         this.todoService = todoService;
     }
 
@@ -34,15 +34,15 @@ public class PostController {
         return ResponseEntity.ok(todo);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<Void> create(@RequestBody TodoCreateRequest todoCreateRequest) throws URISyntaxException {
         Long id = todoService.create(todoCreateRequest);
 
-        return ResponseEntity.created(new URI("/todos/" + id))
+        return ResponseEntity.created(new URI("todos/" + id))
             .build();
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<TodoResponse> update(@RequestBody TodoUpdateRequest todoUpdateRequest, @PathVariable Long id) {
         TodoResponse todo = todoService.update(todoUpdateRequest, id);
 
