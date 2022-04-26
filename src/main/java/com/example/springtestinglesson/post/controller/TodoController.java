@@ -13,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/todos")
-public class PostController {
+public class TodoController {
     private final TodoService todoService;
 
-    public PostController(TodoService todoService) {
+    public TodoController(TodoService todoService) {
         this.todoService = todoService;
     }
 
